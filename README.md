@@ -17,5 +17,8 @@ $ k get replicasets
 
 # get services
 $ k get services
+
+# Pod access
+$ k exec pod_name -it -- bash
 ```
 
