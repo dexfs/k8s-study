@@ -16,15 +16,24 @@ spec:
     spec:
       containers:
       - name: "goserver"
-        image: "dexfs/hello-go:v6.1"
+        image: "dexfs/hello-go:v6.3"
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 8080          
+          periodSeconds: 3
+          failureThreshold: 1
+          initialDelaySeconds: 10
         livenessProbe:
           httpGet:
             path: /healthz
             port: 8080          
           periodSeconds: 5
-          failureThreshold: 3
+          failureThreshold: 1
           timeoutSeconds: 1
           successThreshold: 1
+          initialDelaySeconds: 15
+
         envFrom:
         - configMapRef:
             name: goserver-env
@@ -34,15 +43,15 @@ spec:
           - mountPath: "/go/myfamily"
             name: config
             readOnly: true
-        # resources:
-        #   limits:
-        #     cpu: "1"
-        #     memory: "512Mi"
-        #     ephemeral-storage: "1Gi"
-        #   requests:
-        #     cpu: "500m"
-        #     memory: "256Mi"
-        #     ephemeral-storage: "500Mi"
+        resources:
+          limits:
+            cpu: "1"
+            memory: "512Mi"
+            ephemeral-storage: "1Gi"
+          requests:
+            cpu: "500m"
+            memory: "256Mi"
+            ephemeral-storage: "500Mi"
 
       volumes:
       - name: config

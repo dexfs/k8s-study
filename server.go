@@ -45,11 +45,12 @@ func SecretHandler(w http.ResponseWriter, r *http.Request) {
 func HealthzHandler(w http.ResponseWriter, r *http.Request) {
 	duration := time.Since(startedAt)
 
-	if duration.Seconds() > 25 {
+	if duration.Seconds() < 8 || duration.Seconds() > 30 {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(fmt.Sprintf("Duration: %v", duration.Seconds())))
 		return
 	}
+
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte("OK!"))
 }
